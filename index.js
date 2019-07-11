@@ -1,16 +1,79 @@
-const cool = require('cool-ascii-faces')
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
+// require('dotenv').config()
+const express = require("express")
+let app = express()
+// const path = require('path')
+// const cool = require("cool-ascii-faces")
+// const PORT = process.env.PORT || 5000
+const rounter = express.Router()
+const {Pool} = require("pg")
+const connectionString = process.env.DATABASE_URL || "postgres://adrianyim:adrianyim@localhost:5432/cs313"
+const pool = new Pool({connectionString: connectionString})
 
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/getRate'))
-  .get('/cool', (req, res) => res.send(cool()))
-  .get('/rateResult', vaildation)
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+// app.use(express.static(path.join(__dirname, 'public')))
+// app.set('views', path.join(__dirname, 'views'))
+// app.set('view engine', 'ejs')
+app.set("port", (process.env.PORT || 5000))
+  // app.get('/', (req, res) => res.render('pages/getRate'))
+app.get('/cool', (req, res) => res.send(cool()))
+  // app.get('/rateResult', vaildation)
+  // app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+app.get("/person", getPerson)
+app.listen(app.get("port"), () => {
+  console.log("Listening for connections on: ", app.get("port"));
+})
+
+// Business level
+function getPerson(req, res) {
+  console.log('In the getPerson function');
+
+  let id = req.query.id;
+  console.log("The id is", id);
+
+  personDB(id, (error, result) => {
+      if(error || result == null || result.length != 1) {
+      res.status(500).json({success:false, data:error});
+    }
+
+    console.log("DB result:", result);
+    res.json(result);
+  });
+}
+
+function personDB(id, callback) {
+  console.log("In personDB id: ", id);
+
+  let sql = "SELECT id, first, last, date_of_birth FROM person;";
+  let params = [id];
+
+  pool.query(sql, params, (error, result) => {
+    if (error) {
+      console.log("An erroror is found!!");
+      console.log(error);
+      callback(error, null);
+    }
+
+    console.log("The DB result: " + JSON.stringify(result.rows));
+
+    callback(null, result.rows);
+  });
+}
+
+// Using pool 
+// const pool = new Pool({connectionString: connectionString})
+
+// pool.query('SELECT * FROM person;', (error, res) => {
+//   console.log(error, res)
+//   pool.end()
+// })
+
+// // Using client
+// const client = new Client({connectionString: connectionString})
+// client.connect()
+
+// client.query('SELECT * FROM person;', (error, res) => {
+//   console.log(error, res)
+//   client.end()
+// })
 
   // vaildation function
 function vaildation(req, res) {
@@ -34,7 +97,7 @@ function vaildation(req, res) {
   if (vaild) {
       calculateRate(res, weight, type, rate);
   } else {
-      rate = "Error!!";
+      rate = "erroror!!";
       res.render('pages/rateResult', {weight: weight_, type: type_, rate: rate});
   }
 }
