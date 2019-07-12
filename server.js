@@ -5,7 +5,7 @@ const path = require("path");
 // const session = require("express-session");
 // const bodyparse = require("body-parse");
 const pg = require("pg");
-const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
+const connectionString = process.env.DATABASE_URL || "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
 
 //Use server, public file
 app.use(express.static(path.join(__dirname, "public")));
