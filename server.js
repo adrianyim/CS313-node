@@ -7,9 +7,6 @@ const path = require("path");
 const pg = require("pg");
 const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
 
-// DATABASE_URL = 'postgres://ygmevsoylrqdnr:67833307250c3b770314d56944d19db35c17f9202b724d13d01a917d9ba438fc@ec2-54-204-35-248.compute-1.amazonaws.com:5432/d38jba55fdr03d?ssl=true';
-// const pool = new Pool({connectionString: connectionString});
-
 //Use server, public file
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -41,14 +38,13 @@ function getItems(req, res) {
     console.log("The username is : ", username);
 
     getItemsDB(username, (error, result) => {
-        console.log("The result from getItemsDB from the DB is: ", result);
+        console.log("The result from getItemsDB from the DB is: " , result);
 
-        // if (error || result == null || result.length != 1) {
-        //     res.status(500).json({success: false, data: error});
-        // } else {
-        //     res.json(result);
-        // }
-        res.json(result);
+        if (error || result == null || result.length != 1) {
+            res.status(500).json({success: false, data: error});
+        } else {
+            res.json(result);
+        }
     });
 }
 
@@ -57,7 +53,7 @@ function getItemsDB(username, callback) {
 
     // let sql = "SELECT i.user_name, i.item_id, i.item, i.item_type, i.remark, (SELECT c.cost FROM cost c WHERE c.cost_id = i.cost_id) AS cost, (SELECT c.cost_type FROM cost c WHERE c.cost_id = i.cost_id) AS cost_type, (SELECT d.date FROM date d WHERE d.date_id = i.date_id) AS date FROM items i WHERE i.user_name = 'admin' ORDER BY date;";
 
-    var client = new pg.Client(connectionString);
+    let client = new pg.Client(connectionString);
 
     client.connect((err => {
         if (err) {
