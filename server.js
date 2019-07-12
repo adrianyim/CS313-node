@@ -5,7 +5,7 @@ const path = require("path");
 // const session = require("express-session");
 // const bodyparse = require("body-parse");
 const pg = require("pg");
-const connectionString = process.env.DATABASE_URL;
+const connectionString = process.env.DATABASE_URL 
 // || "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
 
 //Use server, public file
@@ -41,7 +41,8 @@ function getItems(req, res) {
     getItemsDB(username, (error, result) => {
         console.log("The result from getItemsDB from the DB is: " , result);
 
-        if (error || result == null || result.length != 1) {
+        if (error || result == null || result.length == 0) {
+            console.log("Why got error?", error, result, result.length);
             res.status(500).json({success: false, data: error});
         } else {
             res.json(result);
