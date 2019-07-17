@@ -6,6 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Budget Keeper</title>
     <link rel="stylesheet" href="/stylesheets/BK-style.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script type="text/javascript">
+    $(() => {
+      $("#show").click(() => {
+        console.log("Clicked!!!");
+        $.ajax({
+          url: "selectItems",
+          type: "GET",
+          dataType: "json",
+          success: (data) => {
+            console.log("Receiving data: ", JSON.stringify(data));
+            $("#output").html("Receiving data: " + JSON.stringify(data));
+          }
+        });
+      });
+    });
+
+    </script>
 </head>
 <body>
   <% include ../partials/header.ejs %>
@@ -13,9 +32,9 @@
     <label></label>
     <div>
       <table class="table-insert">
-        <form method="post" action="">
-          <tr><td><input type="text" name="Item" placeholder="Item"></td><td>
-          <select name="Item-type">
+        <form method="POST" action="/insertItems">
+          <tr><td><input type="text" name="item" placeholder="Item"></td><td>
+          <select name="item_type">
           <option value="empty">--Item Type--</option>
           <option value="Salaries and wages">Salaries and wages</option>
           <option value="Utility expenses">Utility expenses</option>
@@ -26,14 +45,17 @@
           <option value="Food">Food</option>
           <option value="Others">Others</option>
           </select></td></tr>
-          <tr><td><input type="text" name="Cost" placeholder="Cost"></td>
-          <td><label>Cost Type:</label><br><input type="radio" name="Cost-type" value="Income">Income
-          <input type="radio" name="Cost-type" value="Expense">Expense</td></tr>
-          <tr><td><textarea name="Remark" placeholder="Remark"></textarea></td></tr>
+          <tr><td><input type="text" name="cost" placeholder="Cost"></td>
+          <td><label>Cost Type:</label><br><input type="radio" name="cost_type" value="Income">Income
+          <input type="radio" name="cost_type" value="Expense">Expense</td></tr>
+          <tr><td><textarea name="remark" placeholder="remark"></textarea></td></tr>
           <tr><td colspan="2"><input type="submit" value="Submit"></td></tr>
         </form>      
       </table>
     </div>
+    <button onclick="jqueryReqest();">Test jquery reqest</button>
+    <button id="show">Show my list</button>
+    <div id="output"></div>
   </div>
   <% include ../partials/footer.ejs %>
 </body>
