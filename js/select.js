@@ -1,6 +1,6 @@
 const pg = require("pg");
 
-const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
+const connectionString = process.env.DATABASE_URL || "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
 //process.env.DATABASE_URL || 
 
 const client = new pg.Client(connectionString);
@@ -22,7 +22,7 @@ function selectItems (req, res) {
         } else {
             // Back to Home page
             res.render("home");
-            
+
             return res.json({result: result});
             // JSON.stringify(result.rows);
         }
