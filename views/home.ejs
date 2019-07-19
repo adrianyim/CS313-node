@@ -1,35 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Budget Keeper</title>
-    <link rel="stylesheet" href="/stylesheets/BK-style.css">
-    <script src="/js/jquery-3.4.1.min.js"></script>
-    <script src="/js/jquery.js"></script>
-    <script type="text/javascript">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Budget Keeper | Home</title>
+  <link rel="stylesheet" href="/stylesheets/BK-style.css">
+  <script type="text/javascript">
     $(() => {
-      $("#show").click(() => {
-        console.log("Clicked!!!");
-        $.ajax({
-          url: "selectItems",
-          type: "GET",
-          dataType: "json",
-          success: (data) => {
-            console.log("Receiving data: ", JSON.stringify(data));
-            $("#output").html("Receiving data: " + JSON.stringify(data));
-          }
-        });
-      });
+      console.log("Hello!");
     });
-
-    </script>
+  </script>
 </head>
 <body>
-  <% include ../partials/header.ejs %>
+  <% include partials/header.ejs %>
   <div class="div-info">
-    <label></label>
     <div>
       <table class="table-insert">
         <form method="POST" action="/insertItems">
@@ -53,10 +38,10 @@
         </form>      
       </table>
     </div>
-    <button onclick="jqueryReqest();">Test jquery reqest</button>
+    <!-- <button onclick="jqueryReqest();">Test jquery reqest</button> -->
     <button id="show">Show my list</button>
     <div id="output"></div>
+    <div id="db"> <%- db %></div>
   </div>
-  <% include ../partials/footer.ejs %>
 </body>
 </html>

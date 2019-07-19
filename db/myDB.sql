@@ -56,7 +56,7 @@ INSERT INTO items (item_id, item, item_type, remark, cost_id, date_id, user_name
             (DEFAULT, 'Admin salary', 'Salaries and wages', 'May', DEFAULT, DEFAULT, 'admin'),
             (DEFAULT, 'Walmart', 'Food', 'ice cream', DEFAULT, DEFAULT, 'admin');
 
--- ------
+-- insert section
 INSERT INTO items (item_id, item, item_type, remark, cost_id, date_id, user_name) 
     VALUES (DEFAULT, 'Rent', 'Utility Expenses', '??', (SELECT cost_id from cost WHERE cost_id = 5), (SELECT date from date d WHERE c.date_id = 5), 'tester');
 
@@ -79,10 +79,19 @@ SELECT i.user_name, i.item_id, i.item, i.item_type, i.remark, (SELECT c.cost FRO
 
 SELECT i.user_name, I.item_id, i.item, i.item_type, i.remark, c.cost, c.cost_type, d.date FROM items i, INNER JOIN cost c ON i.cost_id = c.cost_id INNER JOIN date d ON i.date_id = d.date_id WHERE i.user_name = 'admin';
     
--- delete section
-DELETE FROM users WHERE user_id IN (34-46);
+-- update section
+UPDATE cost SET cost = 1, cost_type = 'Income' WHERE cost_id = 1;
 
-DELETE FROM users WHERE user_name="adrian";
+UPDATE date SET date = '06-08-2019' WHERE date_id = 1;
+
+UPDATE items SET item = 'Updated Walamark', item_type = 'Other', remark = 'I have changed the remark' WHERE item_id = 1;
+
+-- delete section
+DELETE FROM items WHERE item_id = 7;
+
+DELETE FROM cost WHERE cost_id = 7;
+
+DELETE FROM date WHERE date_id = 7;
 
 -- UNION JOIN
 SELECT user_name FROM users WHERE user_name='admin'
