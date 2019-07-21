@@ -5,12 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Budget Keeper | Home</title>
-  <link rel="stylesheet" href="/stylesheets/BK-style.css">
+
+  <!-- <link rel="stylesheet" href="/stylesheets/BK-style.css"> -->
+  <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script type="text/javascript">
-    $(() => {
-      console.log("Hello!");
+    $(document).ready(() => {
+      console.log("Hello world!");
+      $("#show").click(() => {
+        console.log("clicked!" + new Date());
+        $.ajax({
+          url: "selectItems/",
+          type: "GET",
+          dataType: "json",
+          success: (data) => {
+            console.log("Ajax success!", data);
+            $("#output").html("All items: " + JSON.stringify(data));
+          }
+        });
+      });
     });
-  </script>
+  </script> -->
+  
 </head>
 <body>
   <% include partials/header.ejs %>
@@ -38,10 +53,9 @@
         </form>      
       </table>
     </div>
-    <!-- <button onclick="jqueryReqest();">Test jquery reqest</button> -->
-    <button id="show">Show my list</button>
+    <!-- <button id="show">Show my list</button><br> -->
     <div id="output"></div>
-    <div id="db"> <%- db %></div>
   </div>
+  <script src="../js/fetch.js"></script>
 </body>
 </html>

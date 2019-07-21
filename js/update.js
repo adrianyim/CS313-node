@@ -7,9 +7,9 @@ const connectionString = process.env.DATABASE_URL;
 // const client = new pg.Client(connectionString);
 const pool = new Pool({connectionString: connectionString});
 
-// Insert function
-const insertItems = (req, res) => {
-    console.log("In insertItems function");
+// Update function
+function updateItems (req, res) {
+    console.log("In updateItems function");
 
     // Retrieve data from client side
     let item = req.body.item;
@@ -17,33 +17,38 @@ const insertItems = (req, res) => {
     let cost = req.body.cost;
     let cost_type = req.body.cost_type;
     let remark = req.body.remark;
-    let username = req.session.username;
-    // req.session.db = ("#db").val();
+    let date = req.body.date;
+    let item_id = req.params.id;
 
-    console.log("The retrieve data are: \nItem: " + item + "\nItem_type: " + item_type + "\nCost: " + cost + "\nCost_type: " +  cost_type + "\nRemark: " + remark + "\nUSERNAME: " + username);
-
-    insertDB(item, item_type, cost, cost_type, remark, username, (error, result) => {
-        console.log("The result from insertItems from the DB is: " , result);
+    console.log("The retrieve data are: ");
+    console.log("Item: ", item);
+    console.log("Item_type: ", item_type);
+    console.log("Cost: ", cost);
+    console.log("Cost_type: ", cost_type);
+    console.log("Remark: ", remark);
+    console.log("Item_id: ", item_id);
+    
+    updateDB(item, item_type, cost, cost_type, remark, date, item_id, (error, result) => {
+        console.log("The result from updateItems from the DB is: " , result);
 
         if (error || result == null) {
-            console.log("Why got error?\n", error);
+            console.log("Why got error?", error, result);
             res.status(500).json({success: false, data: error});
         } else {
             // Back to Home page
             res.render("home", {
-                username: req.session.username,
-                db: req.session.db
+                username: req.session.username
             });
         }
     });
 }
 
-// INSERT query function
-const insertDB = (item, item_type, cost, cost_type, remark, username, callback) => {
-    console.log("In insertDB function");
+// UPDATE query function
+const updateDB = (item, item_type, cost, cost_type, remark, date, item_id, callback) => {
+    console.log("In updateDB function");
 
     // Connect to DB
-    // client.((err) => {
+    // client.connect((err) => {
     //     if (err) {
     //         console.log("Error with connecting to DB: ", err);
     //         callback(err, null);
@@ -54,23 +59,25 @@ const insertDB = (item, item_type, cost, cost_type, remark, username, callback) 
         let combinedResult;
 
         // SQL queries
-        let sql_items = "INSERT INTO items (item_id, item, item_type, remark, cost_id, date_id, user_name) VALUES (DEFAULT, $1, $2, $3, DEFAULT, DEFAULT, $4)";
+        let sql_items = "UPDATE items SET item = $1, item_type = $2, remark = $3 WHERE item_id = $4";
 
-        let sql_cost = "INSERT INTO cost (cost_id, cost, cost_type) VALUES (DEFAULT, $1, $2)";
+        let sql_cost = "UPDATE cost SET cost = $1, cost_type = $2 WHERE cost_id = 2";
         
-        let sql_date = "INSERT INTO date (date_id, date) VALUES (DEFAULT, current_timestamp)";
+        let sql_date = "UPDATE date SET date = $1 WHERE date_id = 2";
+
+        let items_params = [item, item_type, remark, item_id];
 
         let cost_params = [cost, cost_type];
 
-        let items_params = [item, item_type, remark, username];
+        let date_params = [date];
 
-        // Inserting into cost table
+        // Updating cost table
         pool.query(sql_cost, cost_params, (err, result) => {
-            console.log("Inerting into COST");
+            console.log("Updating COST");
             console.log(cost_params);
 
             if (err) {
-                console.log("ERROR: Problem with insert query into cost table: ", err);
+                console.log("ERROR: Problem with updating query on cost table: ", err);
                 callback(err, null);
             }
 
@@ -78,12 +85,12 @@ const insertDB = (item, item_type, cost, cost_type, remark, username, callback) 
             console.log(result);
             combinedResult += result; 
 
-            // Inserting into date table
-            pool.query(sql_date, (err, result) => {
-                console.log("Inerting into DATE");
+            // Updating date table
+            pool.query(sql_date, date_params, (err, result) => {
+                console.log("Updating DATE");
                 
                 if (err) {
-                    console.log("ERROR: Problem with insert query into date table: ", err);
+                    console.log("ERROR: Problem with updating query on date table: ", err);
                     callback(err, null);
                 }
 
@@ -91,13 +98,13 @@ const insertDB = (item, item_type, cost, cost_type, remark, username, callback) 
                 console.log(result);
                 combinedResult += result; 
 
-                // Inserting into items table
+                // Updating items table
                 pool.query(sql_items, items_params, (err, result) => {
-                    console.log("Inerting into ITEMS");
+                    console.log("Updaing ITEMS");
                     console.log(items_params);
 
                     if (err) {
-                        console.log("ERROR: Problem with insert query into items table: ", err);
+                        console.log("ERROR: Problem with updaing query on items table: ", err);
                         callback(err, null);
                     }
 
@@ -120,4 +127,4 @@ const insertDB = (item, item_type, cost, cost_type, remark, username, callback) 
     // });
 }
 
-module.exports = insertItems;
+module.exports = updateItems;

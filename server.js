@@ -4,16 +4,25 @@ const path = require("path");
 const session = require("express-session");
 const bodyparser = require("body-parser"); 
 
-const db = require("./js/queries");
+// ejs pages
 const home = require("./js/home");
 const login = require("./js/login");
+const signUp = require("./js/signUp");
+const updateItem = require("./js/updateItem");
+
+// queries
+const db = require("./js/queries");
 const selected = require("./js/select");
 const inserted = require("./js/insert");
+const updated = require("./js/update");
+const deleted = require("./js/delete");
+const create = require("./js/create");
 
 const app = express();
 
-//Use server, public file
+// Use server, public file
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/js", express.static("./js/"));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(session({
     secure: true,
@@ -22,13 +31,16 @@ app.use(session({
     resave: false
 }));
 
-//Set server
+// Set server
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.set("port", (process.env.PORT || 1010));
 
+// ejs Page
 app.use("/login", login);
 app.use("/home", home);
+app.use("/signUp", signUp);
+app.use("/updateItem", updateItem);
 
 // Select
 app.get("/selectItems", selected);
@@ -38,10 +50,13 @@ app.get("/selectItems", selected);
 app.post("/insertItems", inserted);
 
 // Update
-app.put("/updateItems", db.updateItems);
+// app.put("/updateItems?id=:id", updated);
 
 // Delete
-app.delete("/deleteItems", db.deleteItems);
+app.delete("/deleteItems/:id", deleted);
+
+// Create new user
+app.post("/create", create);
 
 //Listen server
 app.listen(app.get("port"), () => {
