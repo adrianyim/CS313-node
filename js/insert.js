@@ -18,7 +18,6 @@ const insertItems = (req, res) => {
     let cost_type = req.body.cost_type;
     let remark = req.body.remark;
     let username = req.session.username;
-    // req.session.db = ("#db").val();
 
     console.log("The retrieve data are: \nItem: " + item + "\nItem_type: " + item_type + "\nCost: " + cost + "\nCost_type: " +  cost_type + "\nRemark: " + remark + "\nUSERNAME: " + username);
 
@@ -31,8 +30,7 @@ const insertItems = (req, res) => {
         } else {
             // Back to Home page
             res.render("home", {
-                username: req.session.username,
-                db: req.session.db
+                username: req.session.username
             });
         }
     });

@@ -23,10 +23,7 @@ function selectItems (req, res) {
             console.log("Why got error?", error, result, result.length);
             res.status(500).json({success: false, data: error});
         } else {
-            // res.render("home");
             res.json(result);
-            // return res.json({result});
-            // return JSON.stringify(result);
         }
     });
 }
