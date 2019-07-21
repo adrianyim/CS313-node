@@ -7,7 +7,7 @@
 // }
 
 const output = document.getElementById("output");
-const url = "http://localhost:1010/selectItems";
+const url = "https://adrianyim-node.herokuapp.com/selectItems";
 
 // fetch(url)
 // .then((res) => res.json())
