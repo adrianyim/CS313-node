@@ -7,7 +7,8 @@
 // }
 
 const output = document.getElementById("output");
-const url = "http://localhost:1010/selectItems";
+// const url = "http://localhost:1010/selectItems";
+const url = "https://adrianyim-node.herokuapp.com/selectItems";
 
 // fetch(url)
 // .then((res) => res.json())
@@ -48,10 +49,3 @@ function drawTable(json) {
 
     return `${row}`;
 }
-
-
-{/* <ul>
-      <% videodata.categories.forEach(function(item){ %>
-          <li><a href="/video?id=<%= item.categoryID %>"><%= item.categoryName %></a></li>
-      <% });%>
-    </ul> */}
