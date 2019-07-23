@@ -1,6 +1,6 @@
 const {Pool} = require("pg");
 
-const connectionString = "process.env.DATABASE_URL";
+const connectionString = process.env.DATABASE_URL;
 // const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
 
 // const client = new pg.Client(connectionString);

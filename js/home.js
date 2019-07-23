@@ -1,7 +1,7 @@
 const select = require("../js/select");
 const express = require("express");
 
-const connectionString = "process.env.DATABASE_URL";
+const connectionString = process.env.DATABASE_URL;
 // const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
 
 // const {Pool} = require("pg");
