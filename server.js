@@ -21,8 +21,9 @@ const create = require("./js/create");
 const app = express();
 
 // Use server, public file
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "stylesheets")));
 app.use("/js", express.static("./js/"));
+app.use("/stylesheets", express.static("./stylesheets/"));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(session({
     secure: true,
