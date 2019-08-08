@@ -7,8 +7,8 @@
 // }
 
 const output = document.getElementById("output");
-// const url = "http://localhost:1010/selectItems";
-const url = "https://adrianyim-node.herokuapp.com/selectItems";
+const url = "http://localhost:1010/selectItems";
+// const url = "https://adrianyim-node.herokuapp.com/selectItems";
 
 // fetch(url)
 // .then((res) => res.json())
@@ -23,7 +23,7 @@ const url = "https://adrianyim-node.herokuapp.com/selectItems";
 // })
 // })
 // .catch((error) => {
-// console.log(error);
+// console.log(error);`
 // });
 
 fetch(url)
@@ -43,9 +43,10 @@ console.log(error);
 });
 
 function drawTable(json) {
-    let row = json.map(rows => `<tr><td>${rows.item}</td><td>${rows.item_type}</td><td>${rows.cost}</td><td>${rows.cost_type}</td><td>${rows.remark}</td><td>${rows.date}</td><td><a href="/updateItem?id=${rows.item_id}">Update</a></td><td><a href="/deleteItems/${rows.item_id}">Delete</a></td></tr>`).join("\n");
-
-
+    let row = json.map(rows => `<tr><td>${rows.item}</td><td>${rows.item_type}</td><td>${rows.cost}</td><td>${rows.cost_type}</td><td>${rows.remark}</td><td>${rows.date}</td><td><button onclick="window.location.href='/updateItem?id=${rows.item_id}';">Update</button></td><td><button onclick="window.location.href='/handleDelete?id=${rows.item_id}';">Delete</button></td></tr>`).join("\n");
 
     return `${row}`;
 }
+
+// <a href="/updateItem?id=${rows.item_id}">Update</a>
+// <a href="/handleDelete/${rows.item_id}">Delete</a>

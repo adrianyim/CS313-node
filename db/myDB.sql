@@ -42,19 +42,31 @@ INSERT INTO date (date_id, date)
     VALUES  (DEFAULT, '07-10-2019'),
             (DEFAULT, '07-05-2019'),
             (DEFAULT, '07-11-2019'),
-            (DEFAULT, '07-11-2019');
+            (DEFAULT, '07-11-2019'),
+            (DEFAULT, '07-15-2019'),
+            (DEFAULT, '07-22-2019'),
+            (DEFAULT, '07-23-2019'),
+            (DEFAULT, '07-29-2019');
 
 INSERT INTO cost (cost_id, cost, cost_type)
     VALUES  (DEFAULT, 20.99, 'Expense'),
             (DEFAULT, 11.02, 'Expense'),
             (DEFAULT, 504.32, 'Income'),
-            (DEFAULT, 30.51, 'Expense');
+            (DEFAULT, 30.51, 'Expense'),
+            (DEFAULT, 53.78, 'Expense'),
+            (DEFAULT, 5, 'Expense'),
+            (DEFAULT, 99.99, 'Expense'),
+            (DEFAULT, 12.2, 'Expense');
 
 INSERT INTO items (item_id, item, item_type, remark, cost_id, date_id, user_name) 
     VALUES  (DEFAULT, 'Walmark', 'Food', 'shoes', DEFAULT, DEFAULT, 'admin'),
             (DEFAULT, 'BBQ', 'Food', '', DEFAULT, DEFAULT, 'tester'),
             (DEFAULT, 'Admin salary', 'Salaries and wages', 'May', DEFAULT, DEFAULT, 'admin'),
-            (DEFAULT, 'Walmart', 'Food', 'ice cream', DEFAULT, DEFAULT, 'admin');
+            (DEFAULT, 'Walmart', 'Food', 'ice cream', DEFAULT, DEFAULT, 'admin'),
+            (DEFAULT, 'Chicken', 'Food', 'Daniel', DEFAULT, DEFAULT, 'tester'),
+            (DEFAULT, 'Walmart', 'Food', 'ice cream', DEFAULT, DEFAULT, 'tester'),
+            (DEFAULT, 'Walmart', 'Others', 'Is working', DEFAULT, DEFAULT, 'admin'),
+            (DEFAULT, 'Gift', 'Others', 'My mom birthday!', DEFAULT, DEFAULT, 'tester');
 
 -- insert section
 INSERT INTO items (item_id, item, item_type, remark, cost_id, date_id, user_name) 

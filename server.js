@@ -2,13 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
-const bodyparser = require("body-parser"); 
+const bodyparser = require("body-parser");
+const methodOverride = require("method-override");
+// const moment = require("moment");
 
 // ejs pages
 const home = require("./js/home");
 const login = require("./js/login");
 const signUp = require("./js/signUp");
 const updateItem = require("./js/updateItem");
+const handleDelete = require("./js/handleDelete");
 
 // queries
 const db = require("./js/queries");
@@ -31,6 +34,7 @@ app.use(session({
     saveUninitialized: false,
     resave: false
 }));
+app.use(methodOverride("_method"));
 
 // Set server
 app.set("views", path.join(__dirname, "views"));
@@ -40,21 +44,21 @@ app.set("port", (process.env.PORT || 1010));
 // ejs Page
 app.use("/login", login);
 app.use("/home", home);
-app.use("/signUp", signUp);
-app.use("/updateItem", updateItem);
+app.use("/", signUp);
+app.use("/", updateItem);
+app.use("/", handleDelete);
 
 // Select
 app.get("/selectItems", selected);
-// app.get("/selectItems/:username", selectItems); 
 
 // Insert
 app.post("/insertItems", inserted);
 
 // Update
-// app.put("/updateItems?id=:id", updated);
+app.put("/updateItems", updated);
 
 // Delete
-app.delete("/deleteItems/:id", deleted);
+app.delete("/deleteItems", deleted);
 
 // Create new user
 app.post("/create", create);
@@ -63,3 +67,8 @@ app.post("/create", create);
 app.listen(app.get("port"), () => {
     console.log("Listening for connections on: ", app.get("port"));
 });
+
+// http://www.robertprice.co.uk/robblog/javascript_date_time_and_node_js-shtml/
+// https://cordova.apache.org/docs/en/2.7.0/cordova/storage/sqlresultsetrowlist/sqlresultsetrowlist.html
+// https://node-postgres.com/features/types
+// https://stackabuse.com/how-to-format-dates-in-javascript/

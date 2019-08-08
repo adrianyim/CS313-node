@@ -6,8 +6,10 @@ const pool = new Pool({connectionString: connectionString});
 
 const app = require("express").Router();
 
-app.get("/updateItem", (req, res, next) => {
-    console.log("In updateItem page");
+app.get("/handleDelete", (req, res, next) => {
+    console.log("In handleDelete page");
+    console.log("The deleting id: ", req.query.id);
+
     let item_id = req.query.id;
     // let item_id = req.params.id;
     let item, item_type, remark, cost, cost_type, date;
@@ -31,14 +33,14 @@ app.get("/updateItem", (req, res, next) => {
             }
     
             // Direct to updateItem page
-            res.render("updateItem", {
+            res.render("deleteItem", {
                 username: req.session.username,
                 item_id: req.query.id,
                 item: item,
                 item_type: item_type,
                 remark: remark,
                 cost: cost,
-                // cost_type: cost_type,
+                cost_type: cost_type,
                 date: date
             });
             next();
@@ -46,7 +48,7 @@ app.get("/updateItem", (req, res, next) => {
     });
 
     function callItem (item_id, callback) {
-        console.log("The updating id is: " + item_id);
+        console.log("The deleting id is: " + item_id);
 
         let sql = "SELECT i.item_id, i.item, i.item_type, i.remark, (SELECT c.cost FROM cost c WHERE c.cost_id = i.cost_id) AS cost, (SELECT c.cost_type FROM cost c WHERE c.cost_id = i.cost_id) AS cost_type, (SELECT d.date FROM date d WHERE d.date_id = i.date_id) AS date FROM items i WHERE item_id = $1";
         let select_params = [item_id];

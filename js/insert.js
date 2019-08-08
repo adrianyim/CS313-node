@@ -1,7 +1,8 @@
+const moment = require("moment");
 const {Pool} = require("pg");
 
-const connectionString = process.env.DATABASE_URL;
-// const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
+// const connectionString = process.env.DATABASE_URL;
+const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
 
 // const client = new pg.Client(connectionString);
 const pool = new Pool({connectionString: connectionString});
@@ -47,6 +48,10 @@ const insertDB = (item, item_type, cost, cost_type, remark, username, callback) 
     //     }
 
         // console.log("DB corrected!");
+        const now = new Date();
+        // current_timestamp
+        let m = moment().format("MM/DD/YYYY");
+        console.log("Today is: ", m);
 
         let combinedResult;
 
@@ -55,16 +60,17 @@ const insertDB = (item, item_type, cost, cost_type, remark, username, callback) 
 
         let sql_cost = "INSERT INTO cost (cost_id, cost, cost_type) VALUES (DEFAULT, $1, $2)";
         
-        let sql_date = "INSERT INTO date (date_id, date) VALUES (DEFAULT, current_timestamp)";
+        let sql_date = "INSERT INTO date (date_id, date) VALUES (DEFAULT, $1)";
 
         let cost_params = [cost, cost_type];
 
         let items_params = [item, item_type, remark, username];
 
+        let date_params = [now];
+
         // Inserting into cost table
         pool.query(sql_cost, cost_params, (err, result) => {
             console.log("Inerting into COST");
-            console.log(cost_params);
 
             if (err) {
                 console.log("ERROR: Problem with insert query into cost table: ", err);
@@ -72,11 +78,11 @@ const insertDB = (item, item_type, cost, cost_type, remark, username, callback) 
             }
 
             // Query result
-            console.log(result);
+            // console.log(result);
             combinedResult += result; 
 
             // Inserting into date table
-            pool.query(sql_date, (err, result) => {
+            pool.query(sql_date, date_params, (err, result) => {
                 console.log("Inerting into DATE");
                 
                 if (err) {
@@ -85,13 +91,12 @@ const insertDB = (item, item_type, cost, cost_type, remark, username, callback) 
                 }
 
                 // Query result
-                console.log(result);
+                // console.log(result);
                 combinedResult += result; 
 
                 // Inserting into items table
                 pool.query(sql_items, items_params, (err, result) => {
                     console.log("Inerting into ITEMS");
-                    console.log(items_params);
 
                     if (err) {
                         console.log("ERROR: Problem with insert query into items table: ", err);
@@ -99,18 +104,10 @@ const insertDB = (item, item_type, cost, cost_type, remark, username, callback) 
                     }
 
                     // Query result
-                    console.log(result);
+                    // console.log(result);
                     combinedResult += result; 
 
                     callback(null, combinedResult);
-
-                    // End the query
-                    // client.end((err) => {
-                    //     if (err) {
-                    //         console.log("Error with ending the query: ", err);
-                    //         throw err;
-                    //     }
-                    // });
                 });
             });
         });

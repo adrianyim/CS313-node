@@ -12,26 +12,27 @@
     
     <div class="div-info">
         <table>
-            <form method="get" action="update">
-                 <input type='hidden' name='item_id' value=" item_id %>"> %>
-                <tr><td><input type="text" name="item" placeholder="Item" value=" item %>"></td><td>
-                <select name="item-type">
-                <option value=" item_type %>"> item_type %></option>
-                <option value="Salaries and wages">Salaries and wages</option>
-                <option value="Utility expenses">Utility expenses</option>
-                <option value="Administration expenses">Administration expenses</option>
-                <option value="Finance costs">Finance costs</option>
-                <option value="Depreciation">Depreciation</option>
-                <option value="Impairment losses">Impairment losses</option>
-                <option value="Food">Food</option>
-                <option value="Others">Others</option>
+            <form method="POST" action="updateItems?_method=PUT">
+                <input type="hidden" name="_method" value="PUT">
+                <input type="hidden" name="item_id" value="<%= item_id %>">
+                <tr><td><input type="text" name="item" placeholder="Item" value="<%= item %>"></td><td>
+                <select name="item_type">
+                    <option value="<%= item_type %>"><%= item_type %></option>
+                    <option value="Salaries and wages">Salaries and wages</option>
+                    <option value="Utility expenses">Utility expenses</option>
+                    <option value="Administration expenses">Administration expenses</option>
+                    <option value="Finance costs">Finance costs</option>
+                    <option value="Depreciation">Depreciation</option>
+                    <option value="Impairment losses">Impairment losses</option>
+                    <option value="Food">Food</option>
+                    <option value="Others">Others</option>
                 </select></td></tr>
-                <tr><td><input type="text" name="cost" placeholder="Cost" value=" cost %>"></td>
+                <tr><td><input type="text" name="cost" placeholder="Cost" value="<%= cost %>"></td>
                 <td><label>Cost Type:</label>
-                    <input type="radio" name="cost-type" value="Income" >Income
-                    <input type="radio" name="cost-type" value="Expense" >Expense</td></tr>
-                <tr><td><textarea name="remark" placeholder="Remark"> remark %></textarea></td>
-                <td><input type="date" name="date" placeholder="MM/DD/YYYY" value=" date %>"></td></tr>
+                    <input type="radio" name="cost_type" value="Income" >Income
+                    <input type="radio" name="cost_type" value="Expense" >Expense</td></tr>
+                <tr><td><textarea name="remark" placeholder="Remark"><%= remark %></textarea></td>
+                <td><input type="date" name="date" placeholder="MM/DD/YYYY" value="<%= date %>"></td></tr>
                 <tr><td colspan="2"><input type="submit" value="Update"></td></tr>
             </form>   
         </table>

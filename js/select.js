@@ -1,7 +1,7 @@
 const {Pool} = require("pg");
 
-const connectionString = process.env.DATABASE_URL;
-// const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
+// const connectionString = process.env.DATABASE_URL;
+const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
 
 // const client = new pg.Client(connectionString);
 
@@ -16,13 +16,13 @@ function selectItems (req, res) {
     console.log("Username from select function: ", username);
 
     selectDB(username, (error, result) => {
-        console.log("The result from selectItems from the DB is:\n" , result);
+        console.log("The result from selectItems from the DB is:\n" , result.map(row => `${row.date}`));
 
         if (error || result == null || result.length == 0) {
             console.log("Why got error?", error, result, result.length);
             res.status(500).json({success: false, data: error});
         } else {
-            res.json(result);
+            // res.json(result);
         }
     });
 }
@@ -47,15 +47,13 @@ function selectDB (username, callback) {
                 console.log("Error in query, ", err);
                 callback(err, null);
             }
-            
-            // console.log("The result rows of selectItems:\n" + JSON.stringify(result.rows));
-
+            // const now = new Date();
+            console.log("\nThe result rows of selectItems:\n" + JSON.stringify(result.rows));
+            for (var i=1; i<result.rows.length+1; i++){
+                console.log("Row = " + i + " Date =  " + result.rows.map(row => `${row.date}`));
+            }
             // Return back 
             callback(null, result.rows);
-
-            // client.end((err) => {
-            //     if (err) throw err;
-            // });
         });
     // });
 }

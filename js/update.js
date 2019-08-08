@@ -1,9 +1,8 @@
 const {Pool} = require("pg");
 
-const connectionString = process.env.DATABASE_URL;
-// const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
+// const connectionString = process.env.DATABASE_URL;
+const connectionString = "postgres://adrianyim:adrianyim@localhost:5432/budgetkeeper_db";
 
-// const client = new pg.Client(connectionString);
 const pool = new Pool({connectionString: connectionString});
 
 // Update function
@@ -11,13 +10,13 @@ function updateItems (req, res) {
     console.log("In updateItems function");
 
     // Retrieve data from client side
+    let item_id = req.body.item_id;
     let item = req.body.item;
     let item_type = req.body.item_type;
     let cost = req.body.cost;
     let cost_type = req.body.cost_type;
     let remark = req.body.remark;
     let date = req.body.date;
-    let item_id = req.params.id;
 
     console.log("The retrieve data are: ");
     console.log("Item: ", item);
@@ -58,22 +57,21 @@ const updateDB = (item, item_type, cost, cost_type, remark, date, item_id, callb
         let combinedResult;
 
         // SQL queries
-        let sql_items = "UPDATE items SET item = $1, item_type = $2, remark = $3 WHERE item_id = $4";
+        let sql_items = "UPDATE items SET item = $2, item_type = $3, remark = $4 WHERE item_id = $1";
 
-        let sql_cost = "UPDATE cost SET cost = $1, cost_type = $2 WHERE cost_id = 2";
+        let sql_cost = "UPDATE cost SET cost = $2, cost_type = $3 WHERE cost_id = $1";
         
-        let sql_date = "UPDATE date SET date = $1 WHERE date_id = 2";
+        let sql_date = "UPDATE date SET date = $2 WHERE date_id = $1";
 
-        let items_params = [item, item_type, remark, item_id];
+        let items_params = [item_id, item, item_type, remark];
 
-        let cost_params = [cost, cost_type];
+        let cost_params = [item_id, cost, cost_type];
 
-        let date_params = [date];
+        let date_params = [item_id, date];
 
         // Updating cost table
         pool.query(sql_cost, cost_params, (err, result) => {
             console.log("Updating COST");
-            console.log(cost_params);
 
             if (err) {
                 console.log("ERROR: Problem with updating query on cost table: ", err);
@@ -81,7 +79,7 @@ const updateDB = (item, item_type, cost, cost_type, remark, date, item_id, callb
             }
 
             // Query result
-            console.log(result);
+            // console.log(result);
             combinedResult += result; 
 
             // Updating date table
@@ -94,13 +92,12 @@ const updateDB = (item, item_type, cost, cost_type, remark, date, item_id, callb
                 }
 
                 // Query result
-                console.log(result);
+                // console.log(result);
                 combinedResult += result; 
 
                 // Updating items table
                 pool.query(sql_items, items_params, (err, result) => {
                     console.log("Updaing ITEMS");
-                    console.log(items_params);
 
                     if (err) {
                         console.log("ERROR: Problem with updaing query on items table: ", err);
@@ -108,18 +105,10 @@ const updateDB = (item, item_type, cost, cost_type, remark, date, item_id, callb
                     }
 
                     // Query result
-                    console.log(result);
+                    // console.log(result);
                     combinedResult += result; 
 
                     callback(null, combinedResult);
-
-                    // End the query
-                    // client.end((err) => {
-                    //     if (err) {
-                    //         console.log("Error with ending the query: ", err);
-                    //         throw err;
-                    //     }
-                    // });
                 });
             });
         });
