@@ -22,7 +22,7 @@ function selectItems (req, res) {
             console.log("Why got error?", error, result, result.length);
             res.status(500).json({success: false, data: error});
         } else {
-            // res.json(result);
+            res.json(result);
         }
     });
 }
