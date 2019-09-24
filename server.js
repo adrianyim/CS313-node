@@ -14,12 +14,12 @@ const updateItem = require("./js/updateItem");
 const handleDelete = require("./js/handleDelete");
 
 // queries
-const db = require("./js/queries");
+// const db = require("./js/queries");
 const selected = require("./js/select");
 const inserted = require("./js/insert");
 const updated = require("./js/update");
 const deleted = require("./js/delete");
-const create = require("./js/create");
+const created = require("./js/create");
 
 const app = express();
 
@@ -61,7 +61,7 @@ app.put("/updateItems", updated);
 app.delete("/deleteItems", deleted);
 
 // Create new user
-app.post("/create", create);
+app.post("/create", created);
 
 //Listen server
 app.listen(app.get("port"), () => {
